@@ -28,15 +28,15 @@ export default {
       disabled: false,
       errorMessage: '',
       searchEnabled: false,
-      
+
   }
 } as Meta<SelectComponentProps<any>>;
 
-export const WithGenericItems: Story<SelectComponentProps<ListItemType>> = 
+export const Playground: Story<SelectComponentProps<ListItemType>> = 
     (args) => (
         <SelectComponent {...args} />
     );
-WithGenericItems.args = {
+Playground.args = {
     items: generateGenericItemsList(4),
     itemRenderer: (item) => (
         <ListItemComponent
@@ -50,4 +50,10 @@ WithGenericItems.args = {
         return item?.title ?? '';
     },
     placeholder: 'Select component',
+    searchEnabled: true,
+    filterItemsBySearchValue: (inputValue, item) => {
+        if (!inputValue) return true;
+        if (!item?.title) return false;
+        return item.title.indexOf(inputValue) >= 0;
+    }
 }

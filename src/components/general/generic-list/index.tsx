@@ -24,6 +24,15 @@ const GenericListComponent = <T extends IdItem>({
 
     /** DEFINE THE HANDLER BELLOW */
 
+    const onMouseDownHandler = useCallback(
+        (event: any, id: IdType) => {
+            event.preventDefault();
+            event.stopPropagation();
+            onItemClick(id);
+        },
+        [onItemClick]
+    )
+
     const renderItemMapper = useCallback(
         (item: T, index: number): ReactNode => {
             if (!itemRenderer) return null;
@@ -32,13 +41,13 @@ const GenericListComponent = <T extends IdItem>({
                 <div 
                     key={item.id} 
                     className="list-item-wrapper" 
-                    onClick={() => onItemClick(item.id)}
+                    onMouseDown={(event) => onMouseDownHandler(event, item.id)}
                 >
                     {itemRenderer(item, index)}
                 </div>
             )
         },
-        [itemRenderer, onItemClick]
+        [itemRenderer, onMouseDownHandler]
     );
 
 

@@ -1,15 +1,17 @@
-import React, { useCallback, useRef, useState, useEffect } from "react";
+import React, { useCallback, useState, useEffect, useRef } from "react";
 import ErrorMessage from "../../../styled-components/ErrorMessage";
 import Input from "../../../styled-components/Input";
-import { IdItem, IdType, useOutsideClick } from "../../../utils/common-util/CommonUtils";
+import { IdItem, IdType } from "../../../utils/common-util/CommonUtils";
 import { BasicFormElementControls, ControllableFormElement } from "../../../utils/form-utils/FormUtils";
 import { SizeProps } from "../../../utils/theme-util/ThemeUtil";
 import GenericListComponent, { GenericListComponentProps } from "../../general/generic-list";
 import GenericFormBoxComponent from "../generic-form-box";
+import GenericSelectComponent from "../generic-select";
 import SelectWrapper from "./Select.wrapper";
 
 export type SelectComponentProps<T extends IdItem> = {
     selectedOptionRenderer?: (item: T | undefined) => string,
+    filterItemsBySearchValue?: (inputValue: string, item: T | undefined) => boolean,
     placeholder?: string;
     searchEnabled?: boolean;
 } & GenericListComponentProps<T> & ControllableFormElement<T> & BasicFormElementControls<T> & SizeProps;
@@ -28,6 +30,7 @@ const SelectComponent = <T extends IdItem>({
     onFocus = () => {},
     onBlur = () => {},
     searchEnabled = false,
+    filterItemsBySearchValue,
     ...rest
 }: SelectComponentProps<T>) => {
 
@@ -41,45 +44,17 @@ const SelectComponent = <T extends IdItem>({
 
     /** DEFINE THE EFFECTS BELLOW */
 
-    const selectBodyRef = useRef(null);
-    
-    useOutsideClick(
-        selectBodyRef, 
-        ([setIsOpen, disabled]) => {
-            if (disabled) return;
-            setIsOpen(() => false);
-        }, 
-        [setIsOpen, disabled]
-    );
+    const inputRef = useRef(null);
 
     useEffect(() => {
         if (selectedOption === undefined)
             return;
-        
+
         onChange(selectedOption);
     }, [selectedOption, onChange]);
 
-    useEffect(() => {
-        if (isOpen === undefined) return;
-
-        if (isOpen)
-            onFocus();
-        else
-            onBlur();
-    }, [onFocus, onBlur, isOpen]);
-
 
     /** DEFINE THE HANDLERS BELLOW */
-
-    const onSelectHeaderClick = useCallback(
-        (event: any) => {
-            if (disabled) return;
-            event.stopPropagation();
-            event.preventDefault();
-            setIsOpen(curr => !curr);
-        },
-        [setIsOpen, disabled]
-    )
 
     const onItemClickHandler = useCallback(
         (id: IdType) => {
@@ -94,9 +69,23 @@ const SelectComponent = <T extends IdItem>({
                setSelectedOption(item);
             }
 
+            setInputValue(() => undefined);
+
+            if (inputRef && inputRef.current && searchEnabled)
+                (inputRef.current as any).blur();
+
             setIsOpen(() => false);
         },
-        [items, controlled, setIsOpen, setSelectedOption, onChange, disabled]
+        [
+            items, 
+            controlled, 
+            setIsOpen, 
+            setSelectedOption, 
+            onChange, 
+            disabled,
+            inputRef, 
+            searchEnabled
+        ]
     )
 
     const errorRenderer = useCallback(
@@ -113,76 +102,79 @@ const SelectComponent = <T extends IdItem>({
 
     const getSelectedValue = useCallback(
         () => {
+            /** check to see first if search is enabled and the input is focused (the dropdown
+             * is open). If this is the case, then display as the value the current search value,
+             * and as placeholder display the current selected value, if any
+             */
+            if (searchEnabled && isOpen)
+                return inputValue ?? '';
+
+            /** Otherwise display the current selected value if any */
             if (!selectedOptionRenderer) return 'selectedOptionRenderer not implemented';
             let valueToReturn = controlled ? value : selectedOption;
             return selectedOptionRenderer(valueToReturn);
         },
-        [controlled, value, selectedOption, selectedOptionRenderer]
+        [controlled, value, selectedOption, selectedOptionRenderer, inputValue, isOpen, searchEnabled]
     )
 
-    const onFocusHandler = useCallback(
+    const getPlaceholderValue = useCallback(
         () => {
-            if (disabled) return;
-            setIsOpen(() => true);
-        },
-        [setIsOpen, disabled]
-    )
-
-    const onKeyDownHandler = useCallback(
-        (event: any) => {
-            if (disabled) return;
-            if ((event.which || event.keyCode) === 9) {
-                setIsOpen(() => false);
+            if (searchEnabled && isOpen) {
+                if (!selectedOptionRenderer) return 'selectedOptionRenderer not implemented';
+                let valueToReturn = controlled ? value : selectedOption;
+                let renderedOption = selectedOptionRenderer(valueToReturn);
+                if (renderedOption) return renderedOption;
+                return placeholder;
+            } else {
+                return placeholder;
             }
         },
-        [setIsOpen, disabled]
+        [searchEnabled, placeholder, selectedOptionRenderer, value, controlled, selectedOption, isOpen]
+    )
+
+    const onInputChangeHandler = useCallback(
+        (newValue: string | undefined) => {
+            setInputValue(() => newValue);
+        },
+        [setInputValue]
+    )
+
+    const filterItems = useCallback(
+        () => {
+            if (!searchEnabled || !filterItemsBySearchValue || inputValue === undefined)
+                return items;
+            
+            return items?.filter(item => filterItemsBySearchValue(inputValue, item));
+        },
+        [inputValue, items, filterItemsBySearchValue, searchEnabled]
     )
 
     const middleAreaRenderer = useCallback(
         () => {
             return (
                 <Input
+                    ref={inputRef}
                     fontSize={size}
                     disabled={!searchEnabled || disabled}
-                    // onChange={e => onChangeHandler(e.target.value)}
+                    onChange={e => onInputChangeHandler(e.target.value)}
                     value={getSelectedValue()}
-                    onFocus={onFocusHandler}
-                    onKeyDown={onKeyDownHandler}
-                    placeholder={placeholder}
+                    placeholder={getPlaceholderValue()}
                 />
             )
         },
-        [getSelectedValue, size, placeholder, onFocusHandler, onKeyDownHandler, searchEnabled, disabled]
+        [
+            getSelectedValue, 
+            size, 
+            searchEnabled, 
+            disabled, 
+            onInputChangeHandler,
+            getPlaceholderValue
+        ]
     )
 
-    const onSelectWrapperFocus = useCallback(
+    const topContainerRenderer = useCallback(
         () => {
-            if (disabled) return;
-            setIsOpen(() => true);
-        },
-        [disabled]
-    )
-
-    const onSelectWrapperBlur = useCallback(
-        () => {
-            if (disabled) return;
-            setIsOpen(() => false);
-        },
-        [disabled]
-    )
-
-
-    /** define the return statement bellow */
-    return (
-        <SelectWrapper
-            className="select-wrapper"
-            ref={selectBodyRef}
-            tabIndex={(searchEnabled || disabled) ? -1 : 1}
-            onFocus={onSelectWrapperFocus}
-            onBlur={onSelectWrapperBlur}
-        >
-            
-            <div className="select-header" onMouseDown={onSelectHeaderClick}>
+            return (
                 <GenericFormBoxComponent
                     isDisabled={disabled}
                     isInvalid={isInvalid}
@@ -190,17 +182,56 @@ const SelectComponent = <T extends IdItem>({
                     errorRenderer={(errorMessage && isInvalid) ? errorRenderer : undefined}
                     middleAreaRenderer={middleAreaRenderer}
                 />
-            </div>
+            )
+        },
+        [
+            middleAreaRenderer, 
+            errorRenderer,
+            disabled,
+            isInvalid,
+            errorMessage,
+            isOpen
+        ]
+    )
 
-            { (isOpen && !disabled) ?
-                <div className="select-body">
-                    <GenericListComponent
-                        {...rest}
-                        items={items}
-                        onItemClick={onItemClickHandler}
-                    />
-                </div> : null
+    const itemsContainerRenderer = useCallback(
+        () => {
+            return (
+                <GenericListComponent<T>
+                    {...rest}
+                    items={filterItems()}
+                    onItemClick={onItemClickHandler}
+                />
+            )
+        },
+        [filterItems, onItemClickHandler, rest]
+    )
+
+    const onIsOpenChangeHandler = useCallback(
+        (newValue: boolean) => {
+            if (inputRef && inputRef.current && searchEnabled) {
+                if (newValue) (inputRef.current as any).focus();
+                else (inputRef.current as any).blur();
             }
+
+            setIsOpen(() => newValue);
+        },
+        [setIsOpen, inputRef, searchEnabled]
+    )
+
+
+    /** define the return statement bellow */
+    return (
+        <SelectWrapper>
+
+            <GenericSelectComponent
+                disabled={disabled}
+                topContainerRenderer={topContainerRenderer}
+                itemsContainerRenderer={itemsContainerRenderer}
+                value={isOpen}
+                onIsOpenChange={onIsOpenChangeHandler}
+                controlled
+            />
 
         </SelectWrapper>
     )

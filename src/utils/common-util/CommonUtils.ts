@@ -8,8 +8,8 @@ export type IdItem = {
 
 export const useOutsideClick = (
     ref: React.MutableRefObject<any>,
-    clickOutsideCallback: (otherProps: any[]) => void,
-    otherProps: any[]
+    clickOutsideCallback: (otherProps: any) => void,
+    otherProps: any
 ) => {
 
     useEffect(() => {
@@ -28,6 +28,25 @@ export const useOutsideClick = (
             // Unbind the event listener on clean up
             document.removeEventListener("mousedown", handleClickOutside);
         };
-    }, [ref, clickOutsideCallback, ...otherProps]);
+    }, [ref, clickOutsideCallback, otherProps]);
 
 }
+
+export const debounce = <T>(
+    callback: (newValue: T, otherProps: any) => void, 
+    duration: number, 
+    otherProps: any
+) => {
+    let timeoutId = 0;
+
+    return (newValue: T) => {
+      if (timeoutId > 0) {
+        clearTimeout(timeoutId);
+        timeoutId = 0;
+      }
+
+      timeoutId = setTimeout(() => {
+        callback(newValue, otherProps);
+      }, duration) as any;
+    }
+  }
