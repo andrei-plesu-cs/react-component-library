@@ -14,24 +14,24 @@ const GenericFormBoxWrapper = styled.div<SizeProps>`
         font-size: ${ props => ThemeUtil.getDimesionBySizeType(props.size) };
         
         &:hover {
-            border-color: ${ props => props.theme.form.hoverBorderColor };
+            border: ${ props => props.theme.form.hoverBorder };
         }
 
         &.focused {
-            border-color: ${ props => props.theme.form.focusBorderColor };
+            border: ${ props => props.theme.form.focusBorder};
         }
 
         &.invalid {
-            border-color: ${ props => props.theme.form.invalidColor }
+            border: ${ props => props.theme.form.invalidColor }
         }
 
         &.disabled {
             cursor: not-allowed;
-            border-color: ${ props => props.theme.form.disabledBorderColor };
+            border: ${ props => props.theme.form.disabledBorder };
             background: ${ props => props.theme.form.disabledBackgroundColor };
 
             &:hover {
-                border-color: ${ props => props.theme.form.disabledBorderColor };
+                border: ${ props => props.theme.form.disabledBorder };
                 background: ${ props => props.theme.form.disabledBackgroundColor };
             }
         }

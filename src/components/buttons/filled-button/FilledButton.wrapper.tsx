@@ -1,6 +1,5 @@
 import styled from 'styled-components';
 import { ElementTypeProps, ThemeUtil } from '../../../utils/theme-util/ThemeUtil';
-import { lighten } from 'polished';
 
 const FilledButtonWrapper = styled.div<ElementTypeProps>`
     .generic-button-wrapper {

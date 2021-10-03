@@ -1,16 +1,16 @@
 const theme = {
     
     form: {
-        backgroundColor: '#f5f6f8',
+        backgroundColor: '#fff',
         borderRadius: '5px',
         border: '1px solid #b8c0c0',
-        padding: '0.5rem 1rem',
+        padding: '0.8rem 1rem',
         placeholderColor: '#b8c0c0',
         color: '#313237',
-        focusBorderColor: '#7c7d82',
-        hoverBorderColor: '#b8c0c0',
+        focusBorder: '1px solid #3e7afc',
+        hoverBorder: '1px solid gray',
         invalidColor: 'red',
-        disabledBorderColor: '#b8c0c0',
+        disabledBorder: '1px solid #b8c0c0',
         disabledBackgroundColor: '#f5f6f8',
     },
 

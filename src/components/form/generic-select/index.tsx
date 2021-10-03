@@ -91,40 +91,6 @@ const GenericSelectComponent = ({
         [controlled, value, isOpen]
     )
 
-    /** Gets called when the top container is clicked
-     * @param {object} event Click React synthetic event
-     */
-    const onSelectHeaderClick = useCallback(
-        (event: any) => {
-            if (disabled) return;
-
-            /** We stop the propagation of the event through event bubbling because otherwise
-             * it would reach focus event attached to this component, and so both click and focus
-             * events would get triggered at the same time, which would create unintended behaviour
-             */
-            event.preventDefault();
-            event.stopPropagation();
-            
-            /** Depending no the current state of the items container (open/closed), we delegate
-             * the work of updating the state to the blur/focus events. This way, we create a single
-             * source of truth in the component (only these events could modify the state, this click
-             * event simply delegates depending on the current state).
-             * 
-             * We trick the component into thinking that is focused/blured by using the selectBodyRef ref
-             */
-            if (selectBodyRef && selectBodyRef.current) {
-                if (getIsOpen()) {
-                    (selectBodyRef.current as any).blur();
-                }
-                else {
-                    (selectBodyRef.current as any).focus();
-                }
-            }
-            
-        },
-        [disabled, selectBodyRef, getIsOpen]
-    )
-
     /** Gets called when the component becomes active (focused), and updates the items container
      * state to be open. We use this focus event to also be able to open the items container on tab
      * press, not only on click event
@@ -155,6 +121,40 @@ const GenericSelectComponent = ({
                 setIsOpen(() => false);
         },
         [setIsOpen, disabled, onIsOpenChange, controlled]
+    )
+
+    /** Gets called when the top container is clicked
+     * @param {object} event Click React synthetic event
+     */
+    const onSelectHeaderClick = useCallback(
+        (event: any) => {
+            if (disabled) return;
+
+            /** We stop the propagation of the event through event bubbling because otherwise
+             * it would reach focus event attached to this component, and so both click and focus
+             * events would get triggered at the same time, which would create unintended behaviour
+             */
+            event.preventDefault();
+            event.stopPropagation();
+            
+            /** Depending no the current state of the items container (open/closed), we delegate
+             * the work of updating the state to the blur/focus events. This way, we create a single
+             * source of truth in the component (only these events could modify the state, this click
+             * event simply delegates depending on the current state).
+             * 
+             * We trick the component into thinking that is focused/blured by using the selectBodyRef ref
+             */
+            if (selectBodyRef && selectBodyRef.current) {
+                if (getIsOpen()) {
+                    onSelectWrapperBlur()
+                }
+                else {
+                    onSelectWrapperFocus()
+                }
+            }
+            
+        },
+        [disabled, selectBodyRef, getIsOpen, onSelectWrapperFocus, onSelectWrapperBlur]
     )
     
 

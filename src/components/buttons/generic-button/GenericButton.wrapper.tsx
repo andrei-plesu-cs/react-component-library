@@ -28,6 +28,14 @@ const GenericButtonWrapper = styled(Button)<GenericButtonWrapperProps>`
     transition: all 150ms;
     text-transform: uppercase;
     font-weight: 600;
+
+    .leading-area-wrapper {
+        margin-right: 0.3rem;
+    }
+
+    .trailing-area-wrapper {
+        margin-left: 0.3rem;
+    }
 `;
 
 export default GenericButtonWrapper;

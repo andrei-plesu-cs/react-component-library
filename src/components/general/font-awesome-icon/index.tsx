@@ -21,7 +21,7 @@ export type FontAwesomeIconComponentProps = {
  */
 const FontAwesomeIconComponent = ({
     size = 'medium',
-    color,
+    color = '#000',
     iconSrc = ''
 }: FontAwesomeIconComponentProps) => {
 

@@ -15,12 +15,15 @@ export default {
   args: {
     elementType: 'primary',
     disabled: false,
-    text: 'Click me now'
+    text: 'Click me now',
+    fullWidth: false
   }
 } as Meta<FilledButtonComponentProps & {text: string}>;
 
 const Template: Story<FilledButtonComponentProps & {text: string}> = (args) => (
-    <FilledButtonComponent {...args} >
+    <FilledButtonComponent
+        {...args}
+    >
         {args.text}
     </FilledButtonComponent>
 );

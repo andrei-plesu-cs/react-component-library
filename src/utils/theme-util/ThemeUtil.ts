@@ -1,7 +1,6 @@
 import { BoxShadow } from "../../css-rulesets";
 import theme from "../../theme"
-import { compose } from 'ramda';
-import { desaturate, lighten, tint } from "polished";
+import { tint } from "polished";
 
 export type FontColor = 'primary' | 'secondary';
 
