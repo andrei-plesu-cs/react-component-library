@@ -7,8 +7,15 @@ export default {
   component: ListItemComponent,
   title: 'General/ListItem',
   args: {
-      description: '',
-      title: ''
+    description: '',
+    title: '',
+    avatarProps: {},
+    descriptionProps: {},
+    titleProps: {},
+    onClick: () => {}
+  },
+  argTypes: {
+    onClick: { table: {disable: true} }
   }
 } as Meta<ListItemComponentProps>;
 
@@ -53,11 +60,5 @@ WithHover.args = {
     description: 'Hover over this item to see the functionality in action',
     avatarProps: {
         imageSrc: 'https://picsum.photos/400'
-    },
-    hover: {
-        withHover: true,
-        hoverBackground: 'lightgray',
-        duration: 200,
-        withPointerCursor: true
     }
 }

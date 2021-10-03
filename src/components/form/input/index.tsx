@@ -6,18 +6,27 @@ import ErrorMessage from '../../../styled-components/ErrorMessage';
 import GenericFormBoxComponent from '../generic-form-box';
 import { BasicFormElementControls, ControllableFormElement } from '../../../utils/form-utils/FormUtils';
 
+/** component props definition */
 export type InputComponentProps = {
+    /** The placeholder of the underlaying input */
     placeholder?: string;
+
+    /** The type of the underlaying input */
     type?: 'text' | 'number' | 'password';
 } & SizeProps & ControllableFormElement<string> & BasicFormElementControls<string>;
 
 /**
- * Simple input component
+ * Input component built on top of the GenericFormBox component, so it supports visual feedback
+ * for invalid, disabled, hover, focused etc states.
+ * 
+ * Also, could be uncontrolled, it its state is mantained internally or could be controlled from
+ * the parent component, in which case the parent is responsible for updating the state of the
+ * component.
+ * 
+ * Supports everything that GenericFormBox component supports, including trailing or leading
+ * elements.
  * 
  * @component
- * 
- * @param {Object} props
- * @param {string} props.placeholder placeholder of the input
  */
 const InputComponent = ({
     placeholder = '',
@@ -36,12 +45,20 @@ const InputComponent = ({
 
     /** DEFINE THE STATE BELLOW */
 
+    /** Indicated wheter the component is focused or not */
     const [isFocused, setIsFocused] = useState(false);
+
+    /** Holds the state of the underlaying input. Is used only if the component is
+     * uncontrolled. Otherwise, the state id controlled from the parent by the 'value' prop
+     */
     const [inputValue, setInputValue] = useState<string | undefined>(undefined);
 
 
     /** DEFINE THE EFFECTS BELLOW */
 
+    /** Signals the parent component when the state is updated by calling the onChange
+     * callback
+     */
     useEffect(() => {
         if (inputValue === undefined) return;
         onChange(inputValue);
@@ -50,6 +67,9 @@ const InputComponent = ({
 
     /** DEFINE THE HANDLERS BELLOW */
 
+    /** Gets called when the input component is brought into focus and updates the focus state,
+     * while also signaling the parent of the change
+     */
     const onFocusHandler = useCallback(
         (): void => {
             setIsFocused(() => true);
@@ -58,6 +78,9 @@ const InputComponent = ({
         [onFocus, setIsFocused]
     )
 
+    /** Gets called when the input component is brought out of focus and updates the focus state,
+     * while also signaling the parent of the change
+     */
     const onBlurHandler = useCallback(
         (): void => {
             setIsFocused(() => false);
@@ -66,6 +89,10 @@ const InputComponent = ({
         [onBlur, setIsFocused]
     ) 
 
+    /** Gets called when a the state of the component changes. If it is controlled, then it
+     * signals the parent of the change and expects the parent to pass in the updated value
+     * through the 'value' prop. If it is uncontrolled, it updates the internal state value
+     */
     const onChangeHandler = useCallback(
         (newValue: string) => {
             if (controlled) {
@@ -78,6 +105,10 @@ const InputComponent = ({
         [controlled, onChange]
     ) 
 
+    /** Decides what to display in the input depending on wheter the component is controlled
+     * or not. If controlled, it displays the value provided by the parent through props.
+     * Otherwise, it displays the state stored internally
+     */
     const getInputValue = useCallback(
         () => {
             if (controlled)
@@ -87,6 +118,7 @@ const InputComponent = ({
         [inputValue, value, controlled]
     );
 
+    /** Displays the error message provided by the parent through props, if any */
     const errorRenderer = useCallback(
         () => {
             return (
@@ -99,6 +131,10 @@ const InputComponent = ({
         [errorMessage]
     )
 
+    /** Displays the input in the middle area of the GenericFormBox component. It is a
+     * function because the GenericFormBox component renders parts using the render prop
+     * pattern
+     */
     const middleAreaRenderer = useCallback(
         () => {
             return (
@@ -135,4 +171,5 @@ const InputComponent = ({
 
 }
 
+/** export the component */
 export default InputComponent;

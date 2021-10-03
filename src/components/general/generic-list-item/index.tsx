@@ -1,36 +1,41 @@
-import React, { useCallback } from "react";
-import { HoverProps } from "../../../css-rulesets";
+import React from "react";
 import GenericListItemWrapper from "./GenericListItem.wrapper";
 
+/** component props definition */
 export type GenericListItemComponentProps = {
-    onClick?: () => void,
-    titleRenderer?: () => React.ReactNode,
-    descriptionRenderer?: () => React.ReactNode,
-    leftAreaRenderer?: () => React.ReactNode,
-    rightAreaRenderer?: () => React.ReactNode,
-    hover?: HoverProps | undefined;
+    /** Gets called when the element is clicked to signal the parent about the event */
+    onClick?: () => void;
+
+    /** Used to render the title section using the render prop pattern */
+    titleRenderer?: () => React.ReactNode;
+
+    /** Used to render the description section using the render prop pattern */
+    descriptionRenderer?: () => React.ReactNode;
+
+    /** Used to render the leading section using the render prop pattern */
+    leftAreaRenderer?: () => React.ReactNode;
+
+    /** Used to render the trailing section using the render prop pattern */
+    rightAreaRenderer?: () => React.ReactNode;
 };
 
+/**
+ * Component that defines the structure for a basic list item. Uses the render prop pattern
+ * to dinamically customize and render content into the component.
+ * 
+ * @component
+ */
 const GenericListItemComponent = ({
     onClick = () => {},
     titleRenderer,
     descriptionRenderer,
     leftAreaRenderer,
     rightAreaRenderer,
-    hover = {}
 }: GenericListItemComponentProps) => {
-
-
-    /** DEFINE THE HANDLERS BELLOW */
-
-    const onClickHandler = useCallback(() => {
-        onClick();
-    }, [onClick]);
-
 
     /** define the return statement bellow */
     return (
-        <GenericListItemWrapper className="generic-list-item-wrapper" {...hover} onClick={onClickHandler} >
+        <GenericListItemWrapper className="generic-list-item-wrapper" onClick={onClick} >
 
             { leftAreaRenderer ?
                 <div className="left-section">
@@ -66,4 +71,5 @@ const GenericListItemComponent = ({
 
 }
 
+/** export the component */
 export default GenericListItemComponent;

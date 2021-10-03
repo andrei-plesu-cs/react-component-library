@@ -15,7 +15,8 @@ export default {
     topContainerRenderer: { table: { disable: true } },
     itemsContainerRenderer: { table: { disable: true } },
     onIsOpenChange: { table: { disable: true } },
-    value: { table: { disable: true } }
+    value: { table: { disable: true } },
+    controlled: { table: { disable: true } },
   }
 } as Meta<GenericSelectComponentProps>;
 

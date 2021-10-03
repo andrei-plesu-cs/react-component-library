@@ -38,6 +38,33 @@ const theme = {
         boxShadow5: '0 19px 38px rgba(0,0,0,0.30), 0 15px 12px rgba(0,0,0,0.22)'
     },
 
+    buttons: {
+        primary: {
+            primary: '#3e7afc',
+            accent: '#fff'
+        },
+        secondary: {
+            primary: '#02234b',
+            accent: '#fff'
+        },
+        tertiary: {
+            primary: '#f43aac',
+            accent: '#fff'
+        },
+        success: {
+            primary: '#00d0a0',
+            accent: '#fff'
+        },
+        error: {
+            primary: '#d50000',
+            accent: '#fff'
+        },
+        warning: {
+            primary: '#ffc400',
+            accent: '#fff'
+        }
+    },
+
     general: {
         hoverBackgroundColor: '#ececec'
     }

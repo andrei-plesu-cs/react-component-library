@@ -12,6 +12,11 @@ export const boxShadowRuleset = css<BoxShadowProps>`
     box-shadow: ${ props => ThemeUtil.getBoxShadowByType(props.boxShadow) };
 `;
 
+export const boxShadowArgTypes = {
+    options: [ 'box-shadow-1', 'box-shadow-2', 'box-shadow-3', 'box-shadow-4', 'box-shadow-5' ],
+    control: { type: 'select' }
+}
+
 export type HoverProps = {
     withHover?: boolean;
     hoverBackground?: string;

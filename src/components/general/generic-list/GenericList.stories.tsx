@@ -4,6 +4,7 @@ import { Meta, Story } from '@storybook/react';
 import GenericListComponent, { GenericListComponentProps } from '.';
 import { IdItem } from '../../../utils/common-util/CommonUtils';
 import ListItemComponent, { ListItemComponentProps } from '../list-item';
+import { boxShadowArgTypes } from '../../../css-rulesets';
 
 type ListItemType = ListItemComponentProps & IdItem;
 
@@ -29,10 +30,18 @@ export default {
   component: GenericListComponent,
   title: 'General/GenericList',
   args: {
-      
+    boxShadow: 'box-shadow-2',
+    dimensions: undefined,
+    itemRenderer: () => {},
+    items: [],
+    onBottomReach: () => {},
+    onItemClick: () => {}
   },
   argTypes: {
-    onBottomReach: { action: 'onBottomReach' }
+    boxShadow: boxShadowArgTypes,
+    onBottomReach: { action: 'onBottomReach', table: { disable: true } },
+    itemRenderer: { table: { disable: true } },
+    onItemClick:{ action: 'onItemClick', table: { disable: true } }
   }
 } as Meta<GenericListComponentProps<any>>;
 
@@ -45,7 +54,6 @@ WithGenericItems.args = {
     itemRenderer: (item) => (
         <ListItemComponent
             {...item}
-            hover={{ withHover: true }}
         />
     ),
     boxShadow: 'box-shadow-2'
@@ -89,7 +97,6 @@ WithMaxHeightAndScrollableContent.args = {
     itemRenderer: (item) => (
         <ListItemComponent
             {...item}
-            hover={{ withHover: true }}
         />
     ),
     boxShadow: 'box-shadow-2',

@@ -9,7 +9,8 @@ export default {
   component: InputComponent,
   title: 'Form/Input',
   argTypes: {
-    size: sizeArgsType
+    size: sizeArgsType,
+    onChange: { table: { disable: true } }
   },
   args: {
     controlled: false,

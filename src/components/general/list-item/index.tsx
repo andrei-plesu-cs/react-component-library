@@ -1,38 +1,49 @@
-import { isEmpty } from "lodash";
 import React, { useCallback } from "react";
-import { HoverProps } from "../../../css-rulesets";
 import Text, { TextProps } from "../../../styled-components/Text";
 import { IdItem } from "../../../utils/common-util/CommonUtils";
 import AvatarComponent, { AvatarComponentProps } from "../avatar";
 import GenericListItemComponent from "../generic-list-item";
+import { isEmpty } from "lodash";
 
+/** component props definition */
 export type ListItemComponentProps = {
+    /** The more poignant text in the component */
     title?: string;
+
+    /** Smaller text that should describe the title */
     description?: string;
+
+    /** Signals parent when the item has been clicked */
     onClick?: () => void;
+
+    /** Props that control the avatar */
     avatarProps?: AvatarComponentProps | undefined;
+
+    /** Props that control the title */
     titleProps?: TextProps | undefined;
+
+    /** Props that control the description */
     descriptionProps?: TextProps | undefined;
-    hover?: HoverProps | undefined;
 } & IdItem;
 
+/**
+ * Implements the generic list component, by using the Avatar and Text components.
+ * 
+ * @component
+ */
 const ListItemComponent = ({
     onClick = () => {},
     title,
     description,
     avatarProps = {},
     titleProps = {},
-    descriptionProps = {},
-    hover = {}
+    descriptionProps = {}
 }: ListItemComponentProps) => {
 
 
     /** DEFINE THE HANDLERS BELLOW */
 
-    const onClickHandler = useCallback(() => {
-        onClick();
-    }, [onClick]);
-
+    /** Used by the GenericListItem component to render the title as Text */
     const titleRenderer = useCallback(
         () => {
             return (
@@ -47,6 +58,7 @@ const ListItemComponent = ({
         [title, titleProps]
     )
 
+    /** Used by the GenericListItem component to render the description as Text */
     const descriptionRenderer = useCallback(
         () => {
             return (
@@ -63,6 +75,9 @@ const ListItemComponent = ({
         [description, descriptionProps]
     )
 
+    /** Used by the GenericListItem component to render the left area section using the
+     * Avatar component
+     */
     const leftAreaRenderer = useCallback(
         () => {
             return (
@@ -76,8 +91,7 @@ const ListItemComponent = ({
     /** define the return statement bellow */
     return (
         <GenericListItemComponent
-            hover={hover}
-            onClick={onClickHandler}
+            onClick={onClick}
             titleRenderer={titleRenderer}
             descriptionRenderer={descriptionRenderer}
             leftAreaRenderer={!isEmpty(avatarProps) ? leftAreaRenderer : undefined}
@@ -86,4 +100,5 @@ const ListItemComponent = ({
 
 }
 
+/** export the component */
 export default ListItemComponent;

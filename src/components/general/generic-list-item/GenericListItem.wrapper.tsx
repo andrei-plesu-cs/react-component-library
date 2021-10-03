@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import { hoverRuleset } from '../../../css-rulesets';
 
 const GenericListItemWrapper = styled.div`
 
@@ -18,8 +17,6 @@ const GenericListItemWrapper = styled.div`
     .right-section {
         margin-left: 1rem;
     }
-
-    ${ hoverRuleset }
 
 `;
 

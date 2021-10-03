@@ -1,12 +1,7 @@
 import { BoxShadow } from "../../css-rulesets";
 import theme from "../../theme"
-
-export type SizeType = 'small' | 'medium' | 'large';
-
-export const sizeArgsType = {
-    options: [ 'small', 'medium', 'large' ],
-    control: { type: 'select' }
-};
+import { compose } from 'ramda';
+import { desaturate, lighten, tint } from "polished";
 
 export type FontColor = 'primary' | 'secondary';
 
@@ -20,15 +15,31 @@ export type SizeProps = {
     size?: Size;
 }
 
+export const sizeArgsType = {
+    options: [ 'small', 'medium', 'large' ],
+    control: { type: 'select' }
+};
+
 export type FontType = 'primary' | 'secondary';
 
 export type FontTypeProps = {
     font: FontType;
 }
 
+export type ElementType = 'primary' | 'secondary' | 'tertiary' | 'success' | 'error' | 'warning';
+
+export type ElementTypeProps = {
+    elementType?: ElementType;
+}
+
+export const elementTypeArgsType = {
+    options: [ 'primary' , 'secondary' , 'tertiary' , 'success' , 'error' , 'warning' ],
+    control: { type: 'select' }
+};
+
 export class ThemeUtil {
 
-    static getDimesionBySizeType(size: SizeType = 'medium'): string {
+    static getDimesionBySizeType(size: Size = 'medium'): string {
         switch(size) {
             case 'large':
                 return theme.font.fontSize5;
@@ -72,6 +83,10 @@ export class ThemeUtil {
             case 'secondary':
                 return theme.font.fontSecondary;
         }
+    }
+
+    static tone(amount: number, color: string): string {
+        return tint(amount)(color)
     }
 
 }
