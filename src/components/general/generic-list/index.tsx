@@ -87,7 +87,7 @@ const GenericListComponent = <T extends IdItem>({
                 </React.Fragment>
             )
         },
-        [itemRenderer, onMouseDownHandler]
+        [itemRenderer, onMouseDownHandler, items, itemDividerRenderer, selectedItemId]
     );
 
 

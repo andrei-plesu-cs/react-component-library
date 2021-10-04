@@ -171,10 +171,7 @@ const SelectComponent = <T extends IdItem>({
             let valueToReturn = getSelectedOption();
             return selectedOptionRenderer(valueToReturn);
         },
-        [
-            controlled, 
-            value, 
-            selectedOption, 
+        [ 
             selectedOptionRenderer, 
             inputValue, 
             isOpen, 
@@ -206,9 +203,6 @@ const SelectComponent = <T extends IdItem>({
             searchEnabled, 
             placeholder, 
             selectedOptionRenderer, 
-            value, 
-            controlled, 
-            selectedOption, 
             isOpen,
             getSelectedOption
         ]
