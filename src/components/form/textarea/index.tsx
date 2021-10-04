@@ -8,10 +8,23 @@ import TextareaWrapper from "./Textarea.wrapper";
 
 /** component props definition */
 export type TextAreaComponentProps = {
-    /** The placeholder of the underlaying input */
+    /** The placeholder of the underlaying textarea */
     placeholder?: string;
 } & SizeProps & ControllableFormElement<string> & BasicFormElementControls<string>;
 
+/**
+ * Textarea component built on top of the GenericFormBox component, so it supports visual feedback
+ * for invalid, disabled, hover, focused etc states.
+ * 
+ * Also, could be uncontrolled, it its state is mantained internally or could be controlled from
+ * the parent component, in which case the parent is responsible for updating the state of the
+ * component.
+ * 
+ * Supports everything that GenericFormBox component supports, including trailing or leading
+ * elements.
+ * 
+ * @component
+ */
 const TextAreaComponent = ({
     placeholder = '',
     disabled = false,
