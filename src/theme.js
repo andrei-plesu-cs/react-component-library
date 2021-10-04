@@ -1,16 +1,54 @@
 const theme = {
     
     form: {
-        backgroundColor: '#fff',
-        borderRadius: '5px',
-        border: '2px solid #b8c0c0',
-        padding: '0.8rem 1rem',
-        placeholderColor: '#b8c0c0',
-        color: '#313237',
-        focusBorder: '2px solid #3e7afc',
-        hoverBorder: '2px solid gray',
-        disabledBorder: '2px solid #b8c0c0',
-        disabledBackgroundColor: '#f5f6f8',
+        general: {
+            invalid: {
+                color: 'red',
+                border: '2px solid red'
+            }
+        },
+
+        input: {
+            color: '#313237',
+            placeholderColor: '#b8c0c0',
+            carretColor: '#313237'
+        },
+
+        textarea: {
+            color: '#313237',
+            placeholderColor: '#b8c0c0',
+            carretColor: '#313237'
+        },
+
+        formBox: {
+            normal: {
+                background: '#fff',
+                borderRadius: '5px',
+                padding: '0.8rem 1rem',
+                border: '2px solid #b8c0c0'
+            },
+
+            hover: {
+                background: '#fff',
+                borderRadius: '5px',
+                padding: '0.8rem 1rem',
+                border: '2px solid gray'
+            },
+
+            focus: {
+                background: '#fff',
+                borderRadius: '5px',
+                padding: '0.8rem 1rem',
+                border: '2px solid #3e7afc'
+            },
+
+            disabled: {
+                background: '#fff',
+                borderRadius: '5px',
+                padding: '0.8rem 1rem',
+                border: '2px solid #b8c0c0'
+            }
+        },
 
         checkbox: {
             text: {
@@ -42,13 +80,6 @@ const theme = {
                 borderRadius: '5px',
                 border: '2px solid #b8c0c0',
                 checkmarkColor: 'gray'
-            }
-        },
-
-        general: {
-            invalid: {
-                color: 'red',
-                border: '2px solid red'
             }
         }
     },

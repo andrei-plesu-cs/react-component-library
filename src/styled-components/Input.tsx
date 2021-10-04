@@ -12,12 +12,12 @@ const Input = styled.input<InputProps>`
     margin: 0;
     padding: 0;
     width: 100%;
-    caret-color: ${ props => props.theme.form.color };
-    color: ${ props => props.theme.form.color };
+    caret-color: ${ props => props.theme.form.input.carretColor };
+    color: ${ props => props.theme.form.input.color };
     font-size: ${ props => ThemeUtil.getDimesionBySizeType(props.fontSize) };
 
     &::placeholder {
-        color: ${ props => props.theme.form.placeholderColor };
+        color: ${ props => props.theme.form.input.placeholderColor };
         font-size: ${ props => ThemeUtil.getDimesionBySizeType(props.fontSize) };
     }
 

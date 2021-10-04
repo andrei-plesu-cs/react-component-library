@@ -1,39 +1,70 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { SizeProps, ThemeUtil } from '../../../utils/theme-util/ThemeUtil';
+
+const normalRuleset = css`
+    background: ${props => props.theme.form.formBox.normal.background};
+    border-radius: ${props => props.theme.form.formBox.normal.borderRadius};
+    border: ${props => props.theme.form.formBox.normal.border};
+    padding: ${props => props.theme.form.formBox.normal.padding};
+`;
+
+const focusRuleset = css`
+    background: ${props => props.theme.form.formBox.focus.background};
+    border-radius: ${props => props.theme.form.formBox.focus.borderRadius};
+    border: ${props => props.theme.form.formBox.focus.border};
+    padding: ${props => props.theme.form.formBox.focus.padding};
+`;
+
+const hoverRuleset = css`
+    background: ${props => props.theme.form.formBox.hover.background};
+    border-radius: ${props => props.theme.form.formBox.hover.borderRadius};
+    border: ${props => props.theme.form.formBox.hover.border};
+    padding: ${props => props.theme.form.formBox.hover.padding};
+`;
+
+const disabledRuleset = css`
+    background: ${props => props.theme.form.formBox.disabled.background};
+    border-radius: ${props => props.theme.form.formBox.disabled.borderRadius};
+    border: ${props => props.theme.form.formBox.disabled.border};
+    padding: ${props => props.theme.form.formBox.disabled.padding};
+    cursor: not-allowed;
+
+    &:hover {
+        background: ${props => props.theme.form.formBox.disabled.background};
+        border-radius: ${props => props.theme.form.formBox.disabled.borderRadius};
+        border: ${props => props.theme.form.formBox.disabled.border};
+        padding: ${props => props.theme.form.formBox.disabled.padding};
+    }
+`;
+
+const invalidRuleset = css`
+    border: ${props => props.theme.form.general.invalid.border};
+`;
 
 const GenericFormBoxWrapper = styled.div<SizeProps>`
 
     .form-box-body {
-        padding: ${ props => props.theme.form.padding };
-        border: ${ props => props.theme.form.border };
-        background: ${ props => props.theme.form.backgroundColor };
-        border-radius: ${ props => props.theme.form.borderRadius };
         display: flex;
         align-items: center;
         position: relative;
         font-size: ${ props => ThemeUtil.getDimesionBySizeType(props.size) };
-        
-        &:hover {
-            border: ${ props => props.theme.form.hoverBorder };
-        }
 
+        ${normalRuleset}
+
+        &:hover {
+            ${hoverRuleset}
+        }
+        
         &.focused {
-            border: ${ props => props.theme.form.focusBorder};
+            ${focusRuleset}
         }
 
         &.invalid {
-            border: ${ props => props.theme.form.general.invalid.border };
+            ${invalidRuleset}
         }
 
         &.disabled {
-            cursor: not-allowed;
-            border: ${ props => props.theme.form.disabledBorder };
-            background: ${ props => props.theme.form.disabledBackgroundColor };
-
-            &:hover {
-                border: ${ props => props.theme.form.disabledBorder };
-                background: ${ props => props.theme.form.disabledBackgroundColor };
-            }
+            ${disabledRuleset}
         }
 
         .middle-area-wrapper {
