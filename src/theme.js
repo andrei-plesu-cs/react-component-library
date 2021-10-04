@@ -17,7 +17,8 @@ const theme = {
         textarea: {
             color: '#313237',
             placeholderColor: '#b8c0c0',
-            carretColor: '#313237'
+            carretColor: '#313237',
+            contentHeight: '70px'
         },
 
         formBox: {
