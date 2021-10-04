@@ -1,3 +1,4 @@
+import classNames from "classnames";
 import React, { useCallback } from "react";
 import { BoxShadowProps, DimensionsProps } from "../../../css-rulesets";
 import { IdItem, IdType } from "../../../utils/common-util/CommonUtils";
@@ -22,6 +23,15 @@ export type GenericListComponentProps<T extends IdItem> = {
 
     /** Signals when the bottom of the list has been reached, in case the  */
     onBottomReach?: () => void;
+
+    /** Adds additional style to the item whose id equals this variable */
+    selectedItemId?: IdType;
+
+    /** If set to true, the items in the list will appear to be selectable (hover styles added to it) */
+    areItemsSelectable?: boolean;
+
+    /** Renders a divider between the items of the list */
+    itemDividerRenderer?: () => React.ReactNode;
 } & BoxShadowProps;
 
 const GenericListComponent = <T extends IdItem>({
@@ -30,7 +40,10 @@ const GenericListComponent = <T extends IdItem>({
     boxShadow,
     onItemClick = () => {},
     dimensions = {},
-    onBottomReach = () => {}
+    onBottomReach = () => {},
+    selectedItemId,
+    areItemsSelectable = false,
+    itemDividerRenderer
 }: GenericListComponentProps<T>) => {
 
 
@@ -57,13 +70,21 @@ const GenericListComponent = <T extends IdItem>({
             if (!itemRenderer) return null;
 
             return (
-                <div 
-                    key={item.id} 
-                    className="list-item-wrapper" 
-                    onMouseDown={(event) => onMouseDownHandler(event, item.id)}
-                >
-                    {itemRenderer(item, index)}
-                </div>
+                <React.Fragment key={item.id} >
+                    <div
+                        className={classNames({
+                            'list-item-wrapper': true,
+                            'active-list-item': selectedItemId && (selectedItemId === item.id) 
+                        })}
+                        onMouseDown={(event) => onMouseDownHandler(event, item.id)}
+                    >
+                        {itemRenderer(item, index)}
+                    </div>
+                    {
+                        (index+1 < (items?.length ?? 0) && itemDividerRenderer) ?
+                        itemDividerRenderer(): null
+                    }
+                </React.Fragment>
             )
         },
         [itemRenderer, onMouseDownHandler]
@@ -72,7 +93,11 @@ const GenericListComponent = <T extends IdItem>({
 
     /** define the return statement bellow */
     return (
-        <GenericListWrapper boxShadow={boxShadow} className="generic-list-wrapper">
+        <GenericListWrapper 
+            boxShadow={boxShadow} 
+            className="generic-list-wrapper"
+            areItemsSelectable={areItemsSelectable}
+        >
             <ScrollableContainerComponent {...dimensions} onBottomReach={onBottomReach}>
                 {items?.map(renderItemMapper)}
             </ScrollableContainerComponent>

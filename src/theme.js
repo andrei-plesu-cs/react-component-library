@@ -137,7 +137,17 @@ const theme = {
     },
 
     general: {
-        hoverBackgroundColor: '#ececec'
+        hover: {
+            background: '#ececec',
+            border: 'none',
+            color: 'inherit'
+        },
+
+        divider: {
+            background: '#ececec',
+            size: '2px',
+            space: '1rem'
+        }
     }
 
 }

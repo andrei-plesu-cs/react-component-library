@@ -94,6 +94,14 @@ const SelectComponent = <T extends IdItem>({
 
     /** DEFINE THE HANDLERS BELLOW */
 
+    /** Returns the selected option based on wheter the component is controlled or not */
+    const getSelectedOption = useCallback(
+        () => {
+            return controlled ? value : selectedOption;
+        },
+        [controlled, value, selectedOption]
+    );
+
     /** Gets called when a new option has been selected by clicking on that item */
     const onItemClickHandler = useCallback(
         (id: IdType) => {
@@ -160,10 +168,19 @@ const SelectComponent = <T extends IdItem>({
 
             /** Otherwise display the current selected value if any */
             if (!selectedOptionRenderer) return 'selectedOptionRenderer not implemented';
-            let valueToReturn = controlled ? value : selectedOption;
+            let valueToReturn = getSelectedOption();
             return selectedOptionRenderer(valueToReturn);
         },
-        [controlled, value, selectedOption, selectedOptionRenderer, inputValue, isOpen, searchEnabled]
+        [
+            controlled, 
+            value, 
+            selectedOption, 
+            selectedOptionRenderer, 
+            inputValue, 
+            isOpen, 
+            searchEnabled, 
+            getSelectedOption
+        ]
     )
 
     /** Decides what to display as the underlaying input placeholder */
@@ -174,7 +191,7 @@ const SelectComponent = <T extends IdItem>({
             if (searchEnabled && isOpen) {
                 if (!selectedOptionRenderer) return 'selectedOptionRenderer not implemented';
 
-                let valueToReturn = controlled ? value : selectedOption;
+                let valueToReturn = getSelectedOption();
 
                 let renderedOption = selectedOptionRenderer(valueToReturn);
                 if (renderedOption) return renderedOption;
@@ -185,7 +202,16 @@ const SelectComponent = <T extends IdItem>({
             /** Otherwise simply return the placeholder */
             return placeholder ?? '';
         },
-        [searchEnabled, placeholder, selectedOptionRenderer, value, controlled, selectedOption, isOpen]
+        [
+            searchEnabled, 
+            placeholder, 
+            selectedOptionRenderer, 
+            value, 
+            controlled, 
+            selectedOption, 
+            isOpen,
+            getSelectedOption
+        ]
     )
 
     /** Gets called when the input value changes. Simply updates the state with the new value */
@@ -270,10 +296,12 @@ const SelectComponent = <T extends IdItem>({
                     {...rest}
                     items={filterItems()}
                     onItemClick={onItemClickHandler}
+                    selectedItemId={getSelectedOption()?.id}
+                    areItemsSelectable={true}
                 />
             )
         },
-        [filterItems, onItemClickHandler, rest]
+        [filterItems, onItemClickHandler, rest, getSelectedOption]
     )
 
     /** Gets called when the GenericSelect component is focused/blured by click or tab press

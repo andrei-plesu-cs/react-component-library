@@ -99,6 +99,9 @@ const GenericSelectComponent = ({
         () => {
             if (disabled) return;
 
+            if (selectBodyRef && selectBodyRef.current && (document.activeElement !== selectBodyRef.current))
+                (selectBodyRef.current as any).focus();
+
             if (controlled)
                 onIsOpenChange(true);
             else
@@ -114,6 +117,9 @@ const GenericSelectComponent = ({
     const onSelectWrapperBlur = useCallback(
         () => {
             if (disabled) return;
+
+            if (selectBodyRef && selectBodyRef.current && (document.activeElement === selectBodyRef.current))
+                (selectBodyRef.current as any).blur();
 
             if (controlled)
                 onIsOpenChange(false);
@@ -146,10 +152,10 @@ const GenericSelectComponent = ({
              */
             if (selectBodyRef && selectBodyRef.current) {
                 if (getIsOpen()) {
-                    onSelectWrapperBlur()
+                    onSelectWrapperBlur();
                 }
                 else {
-                    onSelectWrapperFocus()
+                    onSelectWrapperFocus();
                 }
             }
             

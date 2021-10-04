@@ -5,6 +5,8 @@ import GenericListComponent, { GenericListComponentProps } from '.';
 import { IdItem } from '../../../utils/common-util/CommonUtils';
 import ListItemComponent, { ListItemComponentProps } from '../list-item';
 import { boxShadowArgTypes } from '../../../css-rulesets';
+import DividerComponent from '../divider';
+import image from '../../../assets/images/profile-image-1.jpg';
 
 type ListItemType = ListItemComponentProps & IdItem;
 
@@ -19,7 +21,7 @@ const generateGenericItemsList = (N: number) => {
             id: i+1,
             title: `Item ${i+1}`,
             description: `This is item ${i+1}`,
-            avatarProps: { imageSrc: 'https://picsum.photos/400' }
+            avatarProps: { imageSrc: image }
         })
     }
 
@@ -32,14 +34,12 @@ export default {
   args: {
     boxShadow: 'box-shadow-2',
     dimensions: undefined,
-    itemRenderer: () => {},
-    items: [],
-    onBottomReach: () => {},
-    onItemClick: () => {}
+    items: []
   },
   argTypes: {
     boxShadow: boxShadowArgTypes,
     onBottomReach: { action: 'onBottomReach', table: { disable: true } },
+    itemDividerRenderer: { table: { disable: true } },
     itemRenderer: { table: { disable: true } },
     onItemClick:{ action: 'onItemClick', table: { disable: true } }
   }
@@ -103,4 +103,39 @@ WithMaxHeightAndScrollableContent.args = {
     dimensions: {
         maxHeight: '400px'
     }
+}
+
+export const WithItemsDivider: Story<GenericListComponentProps<ListItemType>> = 
+    (args) => (
+        <GenericListComponent {...args} />
+    );
+WithItemsDivider.args = {
+    items: generateGenericItemsList(4),
+    itemRenderer: (item) => (
+        <ListItemComponent
+            {...item} description={undefined}
+        />
+    ),
+    itemDividerRenderer: () => (
+        <DividerComponent noSpace />
+    ),
+    boxShadow: 'box-shadow-2'
+}
+
+export const WithSelectableItems: Story<GenericListComponentProps<ListItemType>> = 
+    (args) => (
+        <GenericListComponent {...args} />
+    );
+WithSelectableItems.args = {
+    items: generateGenericItemsList(4),
+    itemRenderer: (item) => (
+        <ListItemComponent
+            {...item} description={undefined}
+        />
+    ),
+    itemDividerRenderer: () => (
+        <DividerComponent noSpace />
+    ),
+    boxShadow: 'box-shadow-2',
+    areItemsSelectable: true
 }

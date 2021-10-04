@@ -16,7 +16,9 @@ export const decorators = [
   (Story) => (
     <ThemeProvider theme={theme}>
       <GlobalStyle />
-      <Story />
+      <div className="all-components-wrapper">
+        <Story />
+      </div>
     </ThemeProvider>
   ),
 ];
