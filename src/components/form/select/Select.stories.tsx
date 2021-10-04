@@ -41,7 +41,6 @@ Playground.args = {
     itemRenderer: (item) => (
         <ListItemComponent
             {...item}
-            hover={{ withHover: true }}
         />
     ),
     boxShadow: 'box-shadow-2',

@@ -3,15 +3,54 @@ const theme = {
     form: {
         backgroundColor: '#fff',
         borderRadius: '5px',
-        border: '1px solid #b8c0c0',
+        border: '2px solid #b8c0c0',
         padding: '0.8rem 1rem',
         placeholderColor: '#b8c0c0',
         color: '#313237',
-        focusBorder: '1px solid #3e7afc',
-        hoverBorder: '1px solid gray',
-        invalidColor: 'red',
-        disabledBorder: '1px solid #b8c0c0',
+        focusBorder: '2px solid #3e7afc',
+        hoverBorder: '2px solid gray',
+        disabledBorder: '2px solid #b8c0c0',
         disabledBackgroundColor: '#f5f6f8',
+
+        checkbox: {
+            text: {
+                color: '#313237'
+            },
+
+            unchecked: {
+                background: '#fff',
+                borderRadius: '5px',
+                border: '2px solid #b8c0c0'
+            },
+
+            checked: {
+                background: '#3e7afc',
+                borderRadius: '5px',
+                border: '2px solid #3e7afc',
+                checkmarkColor: '#fff'
+            },
+
+            hover: {
+                background: '#fff',
+                borderRadius: '5px',
+                border: '2px solid gray',
+                checkmarkColor: '#fff'
+            },
+
+            disabled: {
+                background: '#ececec',
+                borderRadius: '5px',
+                border: '2px solid #b8c0c0',
+                checkmarkColor: 'gray'
+            }
+        },
+
+        general: {
+            invalid: {
+                color: 'red',
+                border: '2px solid red'
+            }
+        }
     },
 
     font: {

@@ -22,7 +22,7 @@ const GenericFormBoxWrapper = styled.div<SizeProps>`
         }
 
         &.invalid {
-            border: ${ props => props.theme.form.invalidColor }
+            border: ${ props => props.theme.form.general.invalid.border };
         }
 
         &.disabled {
