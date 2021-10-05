@@ -1,12 +1,11 @@
 import React, { useCallback, useState } from 'react';
-import { keyframes } from 'styled-components';
 import AnimationContainer from '../../../styled-components/AnimationContainer';
 import { AnimationProps } from '../../../utils/animations-util/AnimationsUtil';
 import FilledButtonComponent from '../../buttons/filled-button';
 
 export type AnimationComponentProps = {
 
-} & AnimationProps
+} & AnimationProps;
 
 const AnimationComponent = (props: AnimationComponentProps) => {
 
