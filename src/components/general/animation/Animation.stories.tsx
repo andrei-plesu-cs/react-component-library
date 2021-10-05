@@ -11,13 +11,14 @@ export default {
     animation: animationArgsType
   },
   args: {
-    animation: 'animation-1',
+    animation: undefined,
     animationDelay: '0',
-    animationDuration: '500ms',
+    animationDuration: '300ms',
     animationDirection: 'normal',
     animationFillMode: 'none',
     animationIterationCount: '1',
-    animationTimingFunction: 'ease'
+    animationTimingFunction: 'ease',
+    transformOrigin: 'top'
   }
 } as Meta<AnimationComponentProps>;
 

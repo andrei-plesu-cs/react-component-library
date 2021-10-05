@@ -16,6 +16,7 @@ const hoverRuleset = css`
 
 const GenericListWrapper = styled.div<GenericListWrapperProps>`
     padding: 0.7rem 0.3rem;
+    background: #fff;
 
     .list-item-wrapper {
         margin: 0;

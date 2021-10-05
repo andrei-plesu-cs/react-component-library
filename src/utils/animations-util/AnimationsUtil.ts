@@ -1,9 +1,9 @@
 import { Keyframes, keyframes } from "styled-components";
 
-export type Animation = 'animation-1' | 'animation-2';
+export type Animation = 'opacity-scale-bounce' | 'opacity-scale';
 
 export const animationArgsType = {
-    options: [ 'animation-1', 'animation-2' ],
+    options: [ 'opacity-scale-bounce', 'opacity-scale' ],
     control: { type: 'select' }
 };
 
@@ -16,20 +16,29 @@ export type AnimationProps = {
     animationTimingFunction?: string;
     animationFillMode?: 'none' | 'forwards' | 'backwards' | 'both';
     customAnimation?: Keyframes;
+    transformOrigin?: string;
 }
 
-const animation1 = keyframes`
-    0% { transform: scale(0); }
-    100% { transform: scale(1); }
+const opacityScaleBounce = keyframes`
+    0% { transform: scale(0.2); opacity: 0 }
+    60% { transform: scale(1.05); opacity: 0.6 }
+    100% { transform: scale(1); opacity: 1 }
+`;
+
+const opacityScale = keyframes`
+    0% { transform: scale(0.1); opacity: 0 }
+    100% { transform: scale(1); opacity: 1 }
 `;
 
 export class AnimationsUtil {
-    static getAnimationByType(animation: Animation = 'animation-1'): Keyframes {
+    static getAnimationByType(animation?: Animation): Keyframes | undefined {
+        if (!animation) return;
+        
         switch(animation) {
-            case 'animation-1':
-                return animation1;
-            case 'animation-2':
-                return animation1;
+            case 'opacity-scale-bounce':
+                return opacityScaleBounce;
+            case 'opacity-scale':
+                return opacityScale;
         }
     }
 }

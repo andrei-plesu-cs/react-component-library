@@ -1,6 +1,8 @@
 import React, { useCallback, useState, useEffect, useRef } from "react";
+import AnimationContainer from "../../../styled-components/AnimationContainer";
 import ErrorMessage from "../../../styled-components/ErrorMessage";
 import Input from "../../../styled-components/Input";
+import { AnimationProps } from "../../../utils/animations-util/AnimationsUtil";
 import { IdItem, IdType } from "../../../utils/common-util/CommonUtils";
 import { BasicFormElementControls, ControllableFormElement } from "../../../utils/form-utils/FormUtils";
 import { SizeProps } from "../../../utils/theme-util/ThemeUtil";
@@ -30,6 +32,9 @@ export type SelectComponentProps<T extends IdItem> = {
      * function. Defaults to false
      */
     searchEnabled?: boolean;
+
+    /** Props that control the animation of the items list renderer */
+    animationProps: AnimationProps
 } & GenericListComponentProps<T> & ControllableFormElement<T> & BasicFormElementControls<T> & SizeProps;
 
 /**
@@ -56,6 +61,7 @@ const SelectComponent = <T extends IdItem>({
     onBlur = () => {},
     searchEnabled = false,
     filterItemsBySearchValue,
+    animationProps = { animation: 'opacity-scale-bounce', transformOrigin: 'top' },
     ...rest
 }: SelectComponentProps<T>) => {
 
@@ -286,13 +292,15 @@ const SelectComponent = <T extends IdItem>({
     const itemsContainerRenderer = useCallback(
         () => {
             return (
-                <GenericListComponent<T>
-                    {...rest}
-                    items={filterItems()}
-                    onItemClick={onItemClickHandler}
-                    selectedItemId={getSelectedOption()?.id}
-                    areItemsSelectable={true}
-                />
+                <AnimationContainer {...animationProps}>
+                    <GenericListComponent<T>
+                        {...rest}
+                        items={filterItems()}
+                        onItemClick={onItemClickHandler}
+                        selectedItemId={getSelectedOption()?.id}
+                        areItemsSelectable={true}
+                    />
+                </AnimationContainer>        
             )
         },
         [filterItems, onItemClickHandler, rest, getSelectedOption]
